@@ -1,49 +1,34 @@
-// MEOK Universal MCP Gateway
-// Route: /v1/<slug>/<tool>
-// Auth: Bearer token in Authorization header
-// Headers out: X-MEOK-Attestation, X-MEOK-Calls-Used, X-MEOK-Tier
-//
-// Scaffold (0.1.0) — real MCP routing lands Day 2 per
-// revenue/Q3_33DAY_DOMINATION_PLAN_2026-05-21.md.
-//
-// Production routing flow:
-//   1. Verify bearer token → tier (Free / Starter / Pro / Substrate / Universe / PAYG / Defence)
-//   2. Atomic increment call-counter in Upstash Redis
-//   3. If over included quota → emit Stripe Meter event for £0.0002/call
-//   4. Resolve <slug> + <tool> → backing MCP container/Lambda
-//   5. Forward request, capture response
-//   6. Sign response with HMAC-SHA256 using customer's signing key
-//   7. Return response + X-MEOK-Attestation header
+// MEOK Universal MCP Gateway — /v1/<slug>/<tool>
+// Edge runtime — parses dynamic params from URL.
 
 export const config = { runtime: "edge" };
 
 const KNOWN_SLUGS = new Set([
-  // Governance (10)
   "eu-ai-act-compliance", "dora-compliance", "nis2-compliance", "cra-compliance",
   "ai-bom", "ai-incident-reporting", "dora-nis2-crosswalk", "bias-detection",
   "watermarking-authenticity", "uk-ai-bill-compliance",
-  // A2A (12)
   "agent-prompt-injection-firewall", "agent-data-residency", "agent-handoff-certified",
   "agent-policy-enforcement", "agent-audit-logger", "agent-rate-limiter",
   "agent-commerce-payments", "agent-delegation", "agent-identity-trust",
   "agent-negotiation", "agent-orchestrator", "a2a-governance-bridge",
-  // Cybersec (6)
   "sbom-cyclonedx", "mitre-attack", "mitre-atlas", "cisa-kev",
   "slsa-supply-chain", "sigstore-cosign",
-  // Industry (8)
   "mica-crypto", "fsa-food-safety", "mdr-medical-device", "fda-samd",
   "coppa-ferpa", "basel-ai-overlay", "mifid-ii-ai", "aml-ai",
-  // Trade (3)
   "haulage-uk-compliance", "skip-hire-ai", "construction-iso-19650",
-  // Platform (4)
   "ai-gateway", "ai-ops", "ai-self-audit", "care-membrane",
-  // Misc
   "cobol-bridge", "canada-aida-ai",
 ]);
 
-export default async function handler(req: Request, ctx: { params: { slug: string; tool: string } }) {
-  const slug = ctx.params.slug;
-  const tool = ctx.params.tool;
+export default async function handler(req: Request): Promise<Response> {
+  const url = new URL(req.url);
+  // Extract slug + tool from path: /v1/<slug>/<tool>
+  const parts = url.pathname.split("/").filter(Boolean);
+  if (parts.length < 3 || parts[0] !== "v1") {
+    return json({ error: "invalid_path", expected: "/v1/<mcp-slug>/<tool>" }, 400);
+  }
+  const slug = parts[1];
+  const tool = parts.slice(2).join("/");
 
   if (!KNOWN_SLUGS.has(slug)) {
     return json({
@@ -59,16 +44,14 @@ export default async function handler(req: Request, ctx: { params: { slug: strin
     return json({
       error: "auth_required",
       message: "Bearer token required. Subscribe at https://meok.ai/pricing — £29 PAYG / £499 Substrate / £1,499 Universe / £4,990 Defence.",
-      hint: "Self-host any MCP MIT-free: `uvx " + slug + "-mcp`",
+      hint: `Self-host any MCP MIT-free: uvx ${slug}-mcp`,
     }, 401);
   }
 
-  // TODO Day 2: resolve token → { customer_id, tier, signing_key }
-  // TODO Day 2: increment quota in Upstash Redis → check tier limit
-  // TODO Day 3: if over limit → emit Stripe Meter `usage_record` event
-  // TODO Day 2: forward to MCP container at internal://mcps/<slug>/<tool>
-  // TODO Day 2: HMAC-SHA256 sign response with customer signing_key
-  // TODO Day 4: append signed attestation to verify.meok.ai chain
+  // TODO Day 2: resolve token → customer + tier + quota state
+  // TODO Day 2: forward request to backing MCP container
+  // TODO Day 3: emit Stripe Meter usage event for over-quota calls
+  // TODO Day 2: HMAC-SHA256 sign response with customer's signing key
 
   return json({
     ok: true,
@@ -78,7 +61,7 @@ export default async function handler(req: Request, ctx: { params: { slug: strin
     tool,
     request_received: true,
     auth_seen: true,
-    note: "Real MCP routing lands Day 2 of Q3_33DAY_DOMINATION_PLAN_2026-05-21.md. Bearer token captured for quota tracking but not yet validated against Stripe.",
+    note: "Real MCP routing lands Day 2 of Q3_33DAY_DOMINATION_PLAN_2026-05-21.md. Bearer token captured but not yet validated against Stripe.",
     pricing: {
       free_self_host: `uvx ${slug}-mcp`,
       payg: "£29/mo + £0.0002/call (https://buy.stripe.com/00w3cxcgAaEGcIBcyQ8k90s)",
