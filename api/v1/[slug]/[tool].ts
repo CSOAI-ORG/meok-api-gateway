@@ -4,20 +4,34 @@
 export const config = { runtime: "edge" };
 
 const KNOWN_SLUGS = new Set([
+  // Governance (existing + NEW 2026-05-21)
   "eu-ai-act-compliance", "dora-compliance", "nis2-compliance", "cra-compliance",
   "ai-bom", "ai-incident-reporting", "dora-nis2-crosswalk", "bias-detection",
-  "watermarking-authenticity", "uk-ai-bill-compliance",
+  "watermarking-authenticity", "uk-ai-bill-compliance", "iso-42005-impact",
+  "korea-ai-basic-act", "agent-content-watermark", "agent-incident-relay",
+  "meok-nis2-nl-register", "meok-cra-art14-reporter", "meok-eu-aigc-icon",
+  // A2A primitives (existing + NEW 2026-05-21)
   "agent-prompt-injection-firewall", "agent-data-residency", "agent-handoff-certified",
   "agent-policy-enforcement", "agent-audit-logger", "agent-rate-limiter",
   "agent-commerce-payments", "agent-delegation", "agent-identity-trust",
   "agent-negotiation", "agent-orchestrator", "a2a-governance-bridge",
+  "bft-progress-council", "agent-token-budget", "agent-cost-allocator",
+  "agent-commerce-protocol", "agent-x402-paywall", "meok-x402-wrap",
+  "oasf-agent-directory", "eudi-wallet", "agent-replay-debugger",
+  "agent-mcp-router",
+  // Cybersec
   "sbom-cyclonedx", "mitre-attack", "mitre-atlas", "cisa-kev",
   "slsa-supply-chain", "sigstore-cosign",
+  // Devtool (NEW 2026-05-21)
+  "mcp-spec-compliance", "meok-mcp-cardgen",
+  // Industry verticals
   "mica-crypto", "fsa-food-safety", "mdr-medical-device", "fda-samd",
   "coppa-ferpa", "basel-ai-overlay", "mifid-ii-ai", "aml-ai",
+  // Trade
   "haulage-uk-compliance", "skip-hire-ai", "construction-iso-19650",
+  // Platform + Care
   "ai-gateway", "ai-ops", "ai-self-audit", "care-membrane",
-  "cobol-bridge", "canada-aida-ai",
+  "cobol-bridge", "canada-aida-ai", "gods-eye-geospatial",
 ]);
 
 export default async function handler(req: Request): Promise<Response> {
