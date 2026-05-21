@@ -1,0 +1,18 @@
+{
+  "rewrites": [
+    { "source": "/v1/:slug/:tool", "destination": "/api/v1/:slug/:tool" },
+    { "source": "/health", "destination": "/api/health" },
+    { "source": "/", "destination": "/api/index" }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        { "key": "Access-Control-Allow-Origin", "value": "*" },
+        { "key": "Access-Control-Allow-Methods", "value": "GET, POST, OPTIONS" },
+        { "key": "Access-Control-Allow-Headers", "value": "Authorization, Content-Type, X-MEOK-Customer-Id" },
+        { "key": "X-Robots-Tag", "value": "noindex" }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "name": "meok-api-gateway",
+  "version": "0.1.0",
+  "description": "Universal MEOK MCP gateway — api.meok.ai/v1/<slug>/<tool> routing with bearer-token auth, quota counting, signed attestation headers, Stripe Meter usage events.",
+  "type": "module",
+  "scripts": {
+    "dev": "vercel dev",
+    "deploy": "vercel deploy --prod --yes"
+  },
+  "dependencies": {
+    "@vercel/edge": "^1.2.1"
+  },
+  "license": "MIT",
+  "author": "Nicholas Templeman <nicholas@meok.ai> (https://meok.ai)"
+}
