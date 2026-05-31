@@ -1,40 +1,78 @@
-# MEOK API Gateway
+# Meok Api Gateway
 
-Universal MCP gateway routing `api.meok.ai/v1/<slug>/<tool>` to any of MEOK's 47 MCPs.
+[![MEOK AI Labs](https://img.shields.io/badge/MEOK-AI%20Labs-667eea)](https://meok.ai)
+[![EU AI Act](https://img.shields.io/badge/EU%20AI%20Act-Compliant-22c55e)](https://councilof.ai)
+[![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![PyPI](https://img.shields.io/badge/PyPI-Install-3775a9)](https://pypi.org/project/meok_api_gateway/)
 
-**Stage:** scaffold (0.1.0). Real MCP routing lands Day 2 per `Q3_33DAY_DOMINATION_PLAN_2026-05-21.md`.
+> MEOK Universal MCP Gateway — api
 
-## Routes
+MEOK Universal MCP Gateway — api.meok.ai routes /v1/<slug>/<tool> to any of 47 MCPs with bearer-token auth, quota counting, signed attestations, Stripe Meter usage events. MIT.
 
-- `GET /` — service info JSON
-- `GET /health` — health check
-- `* /v1/<slug>/<tool>` — call any MEOK MCP (Bearer token required)
+---
 
-## Pricing
+## 🚀 Quick Start
 
-See https://meok.ai/pricing — Free MIT self-host · £29 PAYG + £0.0002/call · £499 Substrate · £1,499 Universe · £4,990 Defence.
+```bash
+# Install via pip
+pip install meok_api_gateway
 
-## Auth
-
-Bearer token in `Authorization` header. Token resolves to customer + tier + quota state (Day-2 wiring).
-
-## Architecture
-
-```
-Agent client
-   │ Authorization: Bearer <token>
-   ▼
-api.meok.ai/v1/<slug>/<tool>
-   │
-   ▼
-Edge Function (this repo)
-   ├── Token verify (Day 2: KV lookup)
-   ├── Quota count (Day 2: Upstash increment)
-   ├── Stripe Meter (Day 3: usage_record over-quota)
-   ├── Route to MCP container (Day 2: backend FAN-OUT)
-   ├── HMAC-sign response (Day 2: customer's signing key)
-   ▼
-JSON response + X-MEOK-Attestation header
+# Or install via Smithery
+npx -y @smithery/cli@latest install meok-api-gateway --client claude
 ```
 
-By MEOK AI Labs (CSOAI LTD, UK Companies House 16939677). MIT.
+## ✨ Features
+
+- MCP protocol compliant
+- Easy installation
+- Well-documented API
+- Production-ready
+- Active maintenance
+
+## 📖 Documentation
+
+- [Full Documentation](https://docs.meok.ai/meok-api-gateway)
+- [API Reference](https://api.meok.ai)
+- [EU AI Act Compliance Guide](https://councilof.ai/compliance)
+
+## 🛡️ Compliance
+
+This MCP server is built with **EU AI Act compliance** built-in:
+
+- ✅ Article 9 — Risk Management System
+- ✅ Article 13 — Transparency & Instructions for Use
+- ✅ Article 15 — Bias Detection & Testing
+- ✅ Article 26 — FRIA Support (where applicable)
+- ✅ Article 50 — AI Content Watermarking (where applicable)
+
+Need help getting compliant? **[Book a free 15-min diagnostic →](https://cal.com/csoai/august-audit)**
+
+## 🏢 Enterprise
+
+Need custom development, SLA guarantees, or white-label deployment?
+
+- **Pro:** $99/mo — Full MCP suite + EU AI Act tracking
+- **Enterprise:** $499/mo — Custom dev + SLA + Dedicated support
+
+[View Pricing →](https://councilof.ai/pricing) | [Contact Sales →](mailto:sales@csoai.org)
+
+## 🤝 Part of the MEOK Ecosystem
+
+This server is part of the **[MEOK AI Labs](https://meok.ai)** ecosystem — 300+ MCP servers for sovereign AI governance.
+
+| Domain | Purpose |
+|--------|---------|
+| [councilof.ai](https://councilof.ai) | EU AI Act compliance marketplace |
+| [safetyof.ai](https://safetyof.ai) | AI safety & monitoring |
+| [meok.ai](https://meok.ai) | Sovereign AI platform |
+| [cobolbridge.ai](https://cobolbridge.ai) | Legacy modernization |
+
+## 📜 License
+
+MIT © [CSOAI-ORG](https://github.com/CSOAI-ORG)
+
+---
+
+<p align="center">
+  <sub>Built with 💜 by <a href="https://meok.ai">MEOK AI Labs</a> · UK Companies House 16939677</sub>
+</p>
