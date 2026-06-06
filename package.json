@@ -8,8 +8,23 @@
     "deploy": "vercel deploy --prod --yes"
   },
   "dependencies": {
-    "@vercel/edge": "^1.2.1"
+    "@vercel/edge": "^1.2.1",
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "http-proxy-middleware": "^4.0.0",
+    "stripe": "^22.2.0"
   },
   "license": "MIT",
-  "author": "Nicholas Templeman <nicholas@meok.ai> (https://meok.ai)"
+  "author": "Nicholas Templeman <nicholas@meok.ai> (https://meok.ai)",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CSOAI-ORG/meok-api-gateway.git"
+  },
+  "keywords": [],
+  "bugs": {
+    "url": "https://github.com/CSOAI-ORG/meok-api-gateway/issues"
+  },
+  "homepage": "https://github.com/CSOAI-ORG/meok-api-gateway#readme"
 }
