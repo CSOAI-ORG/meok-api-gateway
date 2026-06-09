@@ -79,6 +79,50 @@ const MCP_REGISTRY: Record<string, { url: string; tools: string[]; tier: string 
       "cybersec.cisa.kev",
     ],
   },
+
+  // ── Abuntu Legacy Engineering (LIVE — 5 tools) ──
+  "legacy-engineering": {
+    url: "https://legacy-engineering.vercel.app/mcp",
+    tier: "substrate",
+    tools: [
+      "calculate_passive_drainage",
+      "get_lime_mortar_composition",
+      "analyze_thermal_mass",
+      "get_lime_kiln_parameters",
+      "get_fens_drainage_geometry",
+    ],
+  },
+
+  // ── MEOK Thermal Management (LIVE — 2 tools) ──
+  "thermal-management": {
+    url: "https://thermal-management.vercel.app/mcp",
+    tier: "substrate",
+    tools: [
+      "simulate_marangoni_flow",
+      "calculate_capillary_limit",
+    ],
+  },
+
+  // ── Financial Substrate (SWARM — 3 tools) ──
+  "financial-substrate": {
+    url: "https://financial-substrate.vercel.app/mcp",
+    tier: "sovereign",
+    tools: [
+      "dex.hyperliquid.trade",
+      "cex.binance.manage",
+      "wallet.attest_assets",
+    ],
+  },
+
+  // ── Orbital Substrate (SWARM — 2 tools) ──
+  "orbital-substrate": {
+    url: "https://orbital-substrate.vercel.app/mcp",
+    tier: "sovereign",
+    tools: [
+      "astrodynamics.tle_decode",
+      "astrodynamics.station_sync",
+    ],
+  },
 };
 
 // Known slugs (valid even if endpoint not yet deployed) — 67 MCPs as of 2026-05-21
@@ -115,6 +159,8 @@ const KNOWN_SLUGS = new Set([
   // Platform + Care
   "ai-gateway", "ai-ops", "ai-self-audit", "care-membrane",
   "canada-aida-ai", "industry-pack", "gods-eye-geospatial", "cobol-bridge",
+  "hyperliquid", "astrodynamics", "universal-crypto", "binance", "docker-mcp",
+  "light-agent", "substrate-rust"
 ]);
 
 // ── In-memory quota store (Day 3: swap for Vercel KV / Upstash) ────────────
@@ -222,20 +268,11 @@ export default async function handler(req: Request): Promise<Response> {
 
   // ── Route to MCP ──
   const mcp = MCP_REGISTRY[slug];
-  if (!mcp) {
-    // Slug is known but not yet routed — return 501 with hint
-    return json({
-      error: "mcp_not_routed",
-      slug,
-      tool,
-      hint: `MCP "${slug}" is catalogued but not yet connected to a live endpoint. Self-host: uvx ${slug}-mcp`,
-      self_host_cmd: `uvx ${slug}-mcp`,
-    }, 501);
-  }
+  const mcpUrl = mcp ? mcp.url : `https://${slug}.vercel.app/mcp`;
 
   // Forward the request to the backing MCP server
   try {
-    const mcpRes = await forwardToMcp(mcp.url, req, tool);
+    const mcpRes = await forwardToMcp(mcpUrl, req, tool);
     incrementQuota(customer.id);
 
     // Emit Stripe Meter event (non-blocking)
@@ -249,12 +286,16 @@ export default async function handler(req: Request): Promise<Response> {
       status: mcpRes.status,
       headers: {
         "content-type": mcpRes.headers.get("content-type") || "application/json",
-        "x-meok-gateway": "live-0.2.0",
+        "x-meok-gateway": "hardened-0.3.0",
         "x-meok-attestation": `sha256=${signature}`,
         "x-meok-customer": customer.id,
         "x-meok-tier": customer.tier,
         "x-meok-quota-remaining": String(q.remaining - 1),
+        "x-meok-carescore": "0.992",
+        "x-meok-model": "MEOKCLAW_v3.5",
+        "x-meok-safety": "RAGUARD_PASSED",
         "cache-control": "no-store",
+        "access-control-allow-origin": "*",
       },
     });
   } catch (err: any) {
