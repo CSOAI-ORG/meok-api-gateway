@@ -1,7 +1,7 @@
 {
   "name": "meok-api-gateway",
   "version": "0.1.0",
-  "description": "Universal MEOK MCP gateway — api.meok.ai/v1/<slug>/<tool> routing with bearer-token auth, quota counting, signed attestation headers, Stripe Meter usage events.",
+  "description": "Historical MEOK gateway scaffold — superseded by Council of AI's canonical single remote MCP gateway (https://councilof.ai/mcp) and csoai-gspc-mcp.",
   "type": "module",
   "scripts": {
     "dev": "vercel dev",

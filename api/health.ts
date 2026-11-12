@@ -1,10 +1,11 @@
-// MEOK API Gateway health check — /health
+// MEOK API Gateway health check — reports superseded scaffold status honestly
 export const config = { runtime: "edge" };
 export default async function handler() {
   return new Response(JSON.stringify({
-    status: "ok",
+    status: "superseded_scaffold",
     service: "meok-api-gateway",
-    stage: "scaffold",
+    canonical_gateway: "https://councilof.ai/mcp",
+    board: "https://councilof.ai/api/gspc",
     ts: new Date().toISOString(),
   }), { status: 200, headers: { "content-type": "application/json" } });
 }
