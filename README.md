@@ -1,78 +1,44 @@
-# Meok Api Gateway
+# meok-api-gateway (Historical Scaffold — Superseded by `councilof.ai/mcp`)
 
-[![MEOK AI Labs](https://img.shields.io/badge/MEOK-AI%20Labs-667eea)](https://meok.ai)
-[![EU AI Act](https://img.shields.io/badge/EU%20AI%20Act-Compliant-22c55e)](https://councilof.ai)
+[![MEOK](https://img.shields.io/badge/MEOK-meok.ai-0ea5e9)](https://meok.ai)
+[![GSPC](https://img.shields.io/badge/GSPC-live%20GET%20%2Fapi%2Fgspc-0ea5e9)](https://councilof.ai/api/gspc)
+[![Measurement](https://img.shields.io/badge/Measurement-not%20certification-64748b)](https://councilof.ai/api/gspc)
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![PyPI](https://img.shields.io/badge/PyPI-Install-3775a9)](https://pypi.org/project/meok_api_gateway/)
 
-> MEOK Universal MCP Gateway — api
-
-MEOK Universal MCP Gateway — api.meok.ai routes /v1/<slug>/<tool> to any of 47 MCPs with bearer-token auth, quota counting, signed attestations, Stripe Meter usage events. MIT.
+> **Status:** Retained historical prototype. Per Council of AI single-gateway policy, **MEOK operates no second remote MCP gateway**. All remote MCP traffic connects to **`https://councilof.ai/mcp`**.
 
 ---
 
-## 🚀 Quick Start
+## Use the Canonical Council of AI × MEOK × GSPC Stack
 
 ```bash
-# Install via pip
-pip install meok_api_gateway
+# 1. Configure Cursor, Claude Desktop, Claude Code, VS Code, Windsurf, or Gemini CLI
+npx meok-setup --pack gspc
 
-# Or install via Smithery
-npx -y @smithery/cli@latest install meok-api-gateway --client claude
+# 2. Or run the local stdio GSPC board & Ed25519 receipt verifier directly
+npx -y csoai-gspc-mcp
+
+# 3. Install Layer-0 client SDKs
+npm i @csoai/layer0
+pip install csoai-gspc
 ```
 
-## ✨ Features
+### Canonical Live Endpoints
 
-- MCP protocol compliant
-- Easy installation
-- Well-documented API
-- Production-ready
-- Active maintenance
+| Surface | URL | Notes |
+| --- | --- | --- |
+| **Single Remote MCP Gateway** | `https://councilof.ai/mcp` | Streamable HTTP MCP gateway |
+| **Live GSPC Measurement Board** | [`https://councilof.ai/api/gspc`](https://councilof.ai/api/gspc) | Free forever; quote `totals.public_count` & `totals.lid` verbatim |
+| **Corrections Ledger** | [`https://councilof.ai/api/corrections`](https://councilof.ai/api/corrections) | Public corrections ledger (free forever) |
+| **Ed25519 Receipt Verifier** | [`https://councilof.ai/gspc-verify`](https://councilof.ai/gspc-verify) | Browser & offline Ed25519 verification |
+| **MEOK Workspace & H.I.M.** | [`https://meok.ai`](https://meok.ai) · [`/him/`](https://meok.ai/him/) | Human-in-command frontend (`CSOAI-ORG/meok-ai-site`) |
 
-## 📖 Documentation
+## Honesty Register
 
-- [Full Documentation](https://docs.meok.ai/meok-api-gateway)
-- [API Reference](https://api.meok.ai)
-- [EU AI Act Compliance Guide](https://councilof.ai/compliance)
+- **Measurement, not certification.** CSOAI Ltd (UK Companies House `16939677`) measures and publishes signed artifacts; it does not certify, accredit, or act as a notified body under the EU AI Act or any other framework.
+- **Single Remote Gateway:** `https://councilof.ai/mcp` is the sole remote MCP gateway for the estate.
+- **No Fake Stamps:** Always cite live `GET https://councilof.ai/api/gspc` (`totals.public_count` + `totals.lid`). Prefer honest `UNCHECKABLE` when offline or unverified.
 
-## 🛡️ Compliance
+## License
 
-This MCP server is built with **EU AI Act compliance** built-in:
-
-- ✅ Article 9 — Risk Management System
-- ✅ Article 13 — Transparency & Instructions for Use
-- ✅ Article 15 — Bias Detection & Testing
-- ✅ Article 26 — FRIA Support (where applicable)
-- ✅ Article 50 — AI Content Watermarking (where applicable)
-
-Need help getting compliant? **[Book a free 15-min diagnostic →](https://cal.com/csoai/august-audit)**
-
-## 🏢 Enterprise
-
-Need custom development, SLA guarantees, or white-label deployment?
-
-- **Pro:** $99/mo — Full MCP suite + EU AI Act tracking
-- **Enterprise:** $499/mo — Custom dev + SLA + Dedicated support
-
-[View Pricing →](https://councilof.ai/pricing) | [Contact Sales →](mailto:sales@csoai.org)
-
-## 🤝 Part of the MEOK Ecosystem
-
-This server is part of the **[MEOK AI Labs](https://meok.ai)** ecosystem — 300+ MCP servers for sovereign AI governance.
-
-| Domain | Purpose |
-|--------|---------|
-| [councilof.ai](https://councilof.ai) | EU AI Act compliance marketplace |
-| [safetyof.ai](https://safetyof.ai) | AI safety & monitoring |
-| [meok.ai](https://meok.ai) | Sovereign AI platform |
-| [cobolbridge.ai](https://cobolbridge.ai) | Legacy modernization |
-
-## 📜 License
-
-MIT © [CSOAI-ORG](https://github.com/CSOAI-ORG)
-
----
-
-<p align="center">
-  <sub>Built with 💜 by <a href="https://meok.ai">MEOK AI Labs</a> · UK Companies House 16939677</sub>
-</p>
+MIT © [CSOAI Ltd](https://councilof.ai)
